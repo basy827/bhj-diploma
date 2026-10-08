@@ -113,6 +113,7 @@
   color: #495057;
   text-decoration: none;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .accounts-panel .account a:hover {
@@ -120,13 +121,12 @@
 }
 
 .accounts-panel .account span {
-  display: block;
+  display: inline;
 }
 
 .accounts-panel .account .account-sum {
   font-size: 11px;
   color: #868e96;
-  margin-top: 2px;
   font-weight: 400;
 }
 

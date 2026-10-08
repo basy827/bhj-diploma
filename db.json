@@ -60,7 +60,7 @@
       "name": "www",
       "user_id": "xrtpwv3smuph2cvj",
       "id": "xrtpw1rblmuqx55n4",
-      "sum": 1124465
+      "sum": -3336166
     },
     {
       "name": "1",
@@ -85,6 +85,11 @@
       "user_id": "1",
       "id": "diwuk64qmuz599s5",
       "sum": 0
+    },
+    {
+      "name": "test",
+      "user_id": "xrtpw1lm0mupj0jzu",
+      "id": "xrtpwncxmuza8v0p"
     }
   ],
   "transactions": [
