@@ -11,19 +11,11 @@ class RegisterForm extends AsyncForm {
    * */
   onSubmit({ data }) {
     User.register(data, (err, response) => {
-      if (err) {
-        console.error('Ошибка регистрации:', err);
-
-        const errorEl = this.element.querySelector('.error-message');
-        if (errorEl) {
-          errorEl.textContent = err.message || 'Не удалось зарегистрироваться. Попробуйте позже.';
-          errorEl.style.display = 'block';
-        }
+      if (err || !response || !response.success) {
         return;
       }
-
+      this.element.reset();
       App.setState('user-logged');
-
       if (this.modal) {
         this.modal.close();
       }

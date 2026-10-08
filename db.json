@@ -9,6 +9,7 @@
     {
       "name": "123",
       "email": "123@123.ru",
+      "password": "123",
       "id": "xrtpwv3smuph2cvj"
     },
     {
@@ -22,35 +23,68 @@
       "email": "test2@test",
       "password": "test2",
       "id": "xrtpwkp6muy29jpt"
+    },
+    {
+      "name": "Test",
+      "email": "test@example.com",
+      "password": "123",
+      "id": "xrtpwaj6muz61rbo"
+    },
+    {
+      "name": "CleanupTest",
+      "email": "cleanup@example.com",
+      "password": "123",
+      "id": "xrtpwazxmuz64794"
     }
   ],
   "accounts": [
     {
       "name": "Банк",
       "user_id": "1",
-      "id": "1"
+      "id": "1",
+      "sum": 10150
     },
     {
       "name": "Магазин",
       "user_id": "1",
-      "id": "2"
+      "id": "2",
+      "sum": -3750
     },
     {
       "name": "Бизнес",
       "user_id": "1",
-      "id": "3"
+      "id": "3",
+      "sum": 1439000
     },
     {
       "name": "www",
       "user_id": "xrtpwv3smuph2cvj",
       "id": "xrtpw1rblmuqx55n4",
-      "sum": 1127798
+      "sum": 1124465
     },
     {
       "name": "1",
       "user_id": "xrtpwv3smuph2cvj",
       "id": "xrtpwpmfmuy2w26u",
       "sum": 33333
+    },
+    {
+      "name": "JSONTest1791440226",
+      "user_id": "1",
+      "id": "diwuk64qmuz599r2",
+      "sum": 0
+    },
+    {
+      "name": "UrlTest1791440226",
+      "user_id": "1",
+      "id": "diwuk64qmuz599ro",
+      "sum": 0
+    },
+    {
+      "name": "FormTest1791440227",
+      "user_id": "1",
+      "id": "diwuk64qmuz599s5",
+      "sum": 0
     }
   ],
   "transactions": [
@@ -190,87 +224,6 @@
       "user_id": "1"
     },
     {
-      "id": "xrtpw1vl0muqx8obu",
-      "type": "income",
-      "name": "ыыы",
-      "sum": 222,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:10:32.873Z"
-    },
-    {
-      "id": "xrtpw1vx2muqxfftx",
-      "type": "income",
-      "name": "qqq",
-      "sum": 123,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:15:48.452Z"
-    },
-    {
-      "id": "xrtpw1z3amuqxlbm9",
-      "type": "income",
-      "name": "ццц",
-      "sum": 111,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:20:22.928Z"
-    },
-    {
-      "id": "xrtpw20admuqxm1km",
-      "type": "income",
-      "name": "ццц",
-      "sum": 111,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:20:56.565Z"
-    },
-    {
-      "id": "xrtpw20mlmuqxnwp3",
-      "type": "income",
-      "name": "ццц",
-      "sum": 111,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:22:23.558Z"
-    },
-    {
-      "id": "xrtpw22uomuqxy4ow",
-      "type": "income",
-      "name": "ццц",
-      "sum": 111,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:30:20.479Z"
-    },
-    {
-      "id": "xrtpw24mkmuqy092a",
-      "type": "income",
-      "name": "www",
-      "sum": 111,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:31:59.457Z"
-    },
-    {
-      "id": "xrtpwmlmuqyjy8k",
-      "type": "income",
-      "name": "2ййй",
-      "sum": 11111,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-02T12:47:18.547Z"
-    },
-    {
-      "id": "xrtpwieemuy1y1f4",
-      "type": "income",
-      "name": "22",
-      "sum": 2222,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-07T11:56:37.935Z"
-    },
-    {
       "id": "xrtpwkzimuy2hik0",
       "type": "income",
       "name": "Тестовый доход",
@@ -280,24 +233,6 @@
       "created_at": "2026-10-07T12:11:46.607Z"
     },
     {
-      "id": "xrtpwnbemuy2lu2e",
-      "type": "income",
-      "name": "в",
-      "sum": 2121,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-07T12:15:08.149Z"
-    },
-    {
-      "id": "xrtpwnfkmuy2mk4h",
-      "type": "income",
-      "name": "апвавыы",
-      "sum": 1111111,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-07T12:15:41.920Z"
-    },
-    {
       "id": "xrtpwof8muy2u49c",
       "type": "income",
       "name": "Ещё доход",
@@ -305,15 +240,6 @@
       "account_id": "1",
       "user_id": "xrtpwkp6muy29jpt",
       "created_at": "2026-10-07T12:21:34.607Z"
-    },
-    {
-      "id": "xrtpwpglmuy2vt1u",
-      "type": "income",
-      "name": "ввв",
-      "sum": 333,
-      "account_id": "xrtpw1rblmuqx55n4",
-      "user_id": "xrtpwv3smuph2cvj",
-      "created_at": "2026-10-07T12:22:53.393Z"
     },
     {
       "id": "xrtpwubvmuy3lonk",
@@ -332,6 +258,51 @@
       "account_id": "xrtpw1rblmuqx55n4",
       "user_id": "xrtpwv3smuph2cvj",
       "created_at": "2026-10-07T12:43:11.988Z"
+    },
+    {
+      "id": "xrtpwaj6muz61rc2",
+      "type": "income",
+      "name": "Salary",
+      "sum": 2500,
+      "account_id": "1",
+      "user_id": "1",
+      "created_at": "2026-10-08T06:39:16.130Z"
+    },
+    {
+      "id": "xrtpwazxmuz6479j",
+      "type": "expense",
+      "name": "Test expense",
+      "sum": 50,
+      "account_id": "1",
+      "user_id": "1",
+      "created_at": "2026-10-08T06:41:10.087Z"
+    },
+    {
+      "id": "xrtpwhwjmuz7swj7",
+      "type": "expense",
+      "name": "вваы",
+      "sum": 3333333,
+      "account_id": "xrtpw1rblmuqx55n4",
+      "user_id": "xrtpwv3smuph2cvj",
+      "created_at": "2026-10-08T07:28:22.194Z"
+    },
+    {
+      "id": "xrtpwiy4muz7u3wt",
+      "type": "income",
+      "name": "доход",
+      "sum": 1000,
+      "account_id": "xrtpw1rblmuqx55n4",
+      "user_id": "xrtpwv3smuph2cvj",
+      "created_at": "2026-10-08T07:29:18.412Z"
+    },
+    {
+      "id": "xrtpwj38muz7uc0b",
+      "type": "expense",
+      "name": "расход",
+      "sum": 500,
+      "account_id": "xrtpw1rblmuqx55n4",
+      "user_id": "xrtpwv3smuph2cvj",
+      "created_at": "2026-10-08T07:29:28.906Z"
     }
   ]
 }

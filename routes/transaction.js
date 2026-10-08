@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const multer  = require('multer');
+const multer = require('multer');
 const upload = multer();
 const uniqid = require('uniqid');
 
@@ -11,10 +11,8 @@ router.setDb = function(db) {
 
 //запрос списка транзакций
 router.get("/", upload.none(), function(request, response) {
-    const db = dbInstance;// получение БД
-    //получение значения списка транзакций, для указанного счёта
-    let transactions = db.get("transactions").filter({account_id: request.query.account_id}).value();
-    //отправка ответа со списком транзакций
+    const db = dbInstance;
+    let transactions = db.get("transactions").filter({ account_id: request.query.account_id }).value();
     response.json({ success: true, data: transactions });
 });
 
@@ -22,46 +20,46 @@ router.get("/", upload.none(), function(request, response) {
 router.post("/", upload.none(), function(request, response) {
     const db = dbInstance;
 
-    // Если в body есть id — это удаление
     if (request.body.id) {
         let transactions = db.get("transactions");
         let { id } = request.body;
-        let removingTransaction = transactions.find({id});
-        if(removingTransaction.value()){
-            transactions.remove({id}).write();
+        let removingTransaction = transactions.find({ id });
+
+        if (removingTransaction.value()) {
+            transactions.remove({ id }).write();
             response.json({ success: true });
-        }else{
+        } else {
             response.json({ success: false });
         }
         return;
     }
 
-    // Иначе — создание транзакции
     let transactions = db.get("transactions");
-    const reg =  /^\-?\d+(\.?\d+)?$/;
+    const reg = /^-?\d+(\.\d+)?$/;
     const { type, name, sum, account_id } = request.body;
-    let currentUser = db.get("users").find({id: request.session.id}).value();
-    if(!currentUser){
-        response.json({ success: false, error:"Необходима авторизация" });
+    let currentUser = db.get("users").find({ id: request.session.id }).value();
+
+    if (!currentUser) {
+        response.json({ success: false, error: "Необходима авторизация" });
         return;
     }
-    else{
-        if (reg.test(sum)) {
-            let currentUserId = currentUser.id;
-            transactions.push({
-                id: uniqid(),
-                type: type.toLowerCase(),
-                name,
-                sum: +sum,
-                account_id,
-                user_id: currentUserId,
-                created_at: new Date().toISOString()
-            }).write();
-            response.json({success: true});
-        } else {
-            response.json({ success: false, error:"Недопустимые символы в поле Сумма" });
-        }
+
+    if (!type || !name || !account_id || sum === undefined || sum === null || !reg.test(String(sum))) {
+        response.json({ success: false, error: "Недопустимые символы в поле Сумма" });
+        return;
     }
+
+    transactions.push({
+        id: uniqid(),
+        type: String(type).toLowerCase(),
+        name,
+        sum: Number(sum),
+        account_id,
+        user_id: currentUser.id,
+        created_at: new Date().toISOString()
+    }).write();
+
+    response.json({ success: true });
 });
 
 module.exports = router;

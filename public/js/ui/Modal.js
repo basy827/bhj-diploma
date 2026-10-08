@@ -45,9 +45,7 @@ class Modal {
    * со значением «block»
    * */
   open() {
-    if (this.element) {
-      this.element.style.display = 'block';
-    }
+    this.element.style.display = 'block';
   }
 
   /**
@@ -60,8 +58,6 @@ class Modal {
    * Закрывает окно: удаляет CSS-свойство display
    * */
   close(){
-    if (this.element) {
-      this.element.style.display = '';
-    }
+    this.element.style.display = '';
   }
 }

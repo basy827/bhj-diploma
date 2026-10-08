@@ -42,26 +42,29 @@ class Sidebar {
 
       btn.addEventListener('click', () => {
         switch (action) {
-          case 'login':
-            const loginModal = App.getModal('login');
-            if (loginModal) loginModal.show();
+          case 'login': {
+            const modal = App.getModal('login');
+            if (modal) {
+              modal.show();
+            }
             break;
+          }
 
-          case 'register':
-            const regModal = App.getModal('register');
-            if (regModal) regModal.show();
+          case 'register': {
+            const modal = App.getModal('register');
+            if (modal) {
+              modal.show();
+            }
             break;
+          }
 
           case 'logout':
             User.logout((err, response) => {
-              if (!err) {
+              if (!err && response && response.success) {
                 App.setState('init');
               }
             });
             break;
-
-          default:
-            console.warn(`Unknown action: ${action}`);
         }
       });
     });

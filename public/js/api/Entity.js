@@ -9,15 +9,10 @@ class Entity {
    * (в зависимости от того, что наследуется от Entity)
    * */
   static list(data, callback) {
-    let url = this.URL;
-    if (data && Object.keys(data).length > 0) {
-      const params = new URLSearchParams(data);
-      url += '?' + params.toString();
-    }
     return createRequest({
-      url: url,
+      url: this.URL,
       method: 'GET',
-      responseType: 'json',
+      data,
       callback
     });
   }
@@ -31,7 +26,6 @@ class Entity {
     return createRequest({
       url: this.URL,
       method: 'POST',
-      responseType: 'json',
       data,
       callback
     });
@@ -39,13 +33,13 @@ class Entity {
 
   /**
    * Удаляет информацию о счёте или доходе/расходе
-   * (в зависимости от того, что наследуется от Entity)
+   * (в зависимости от того,
+   * что наследуется от Entity)
    * */
   static remove(data, callback) {
     return createRequest({
-      url: this.URL + '/',
+      url: this.URL,
       method: 'POST',
-      responseType: 'json',
       data,
       callback
     });

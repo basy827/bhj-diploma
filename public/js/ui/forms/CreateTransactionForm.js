@@ -8,7 +8,7 @@ class CreateTransactionForm extends AsyncForm {
    * метод renderAccountsList
    * */
   constructor(element) {
-    super(element)
+    super(element);
   }
 
   /**
@@ -20,18 +20,13 @@ class CreateTransactionForm extends AsyncForm {
     if (!select) return;
 
     Account.list({}, (err, response) => {
-      if (err) {
-        console.error('Ошибка загрузки счетов:', err);
+      if (err || !response || !response.success) {
         return;
       }
-      const accounts = response && response.data ? response.data : [];
-      select.innerHTML = '';
-      accounts.forEach(account => {
-        const option = document.createElement('option');
-        option.value = account.id;
-        option.textContent = account.name;
-        select.appendChild(option);
-      });
+      const accounts = response.data || [];
+      select.innerHTML = accounts.map(
+        (item) => `<option value="${item.id}">${item.name}</option>`
+      ).join('');
     });
   }
 
@@ -42,23 +37,15 @@ class CreateTransactionForm extends AsyncForm {
    * в котором находится форма
    * */
   onSubmit({ data }) {
-    console.log('CreateTransactionForm.onSubmit called, data:', data);
-    data.sum = Number(data.sum);
     Transaction.create(data, (err, response) => {
-      console.log('Transaction.create callback - err:', err, 'response:', response);
-      if (err) {
-        console.error('Ошибка создания транзакции:', err);
+      if (err || !response || !response.success) {
         return;
       }
-      if (response && response.success) {
-        App.update();
-        this.element.reset();
-        if (this.modal) {
-          this.modal.close();
-        }
-      } else {
-        console.error('Ошибка создания транзакции:', response && response.error ? response.error : 'Неизвестная ошибка');
+      this.element.reset();
+      if (this.modal) {
+        this.modal.close();
       }
+      App.update();
     });
   }
 }

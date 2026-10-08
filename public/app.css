@@ -136,12 +136,18 @@
   display: none;
 }
 
+.app_init .menu-item_login,
+.app_init .menu-item_register {
+  display: block;
+}
+
 .app_user-logged .menu-item_logout {
   display: block;
 }
 
 .app_user-logged .menu-item_login,
-.app_user-logged .menu-item_register {
+.app_user-logged .menu-item_register,
+.app_init .menu-item_logout {
   display: none;
 }
 
@@ -170,7 +176,7 @@
   background-color: #f8f9fa;
 }
 
-.transaction .transaction-icon {
+.transaction .transaction__icon {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -181,17 +187,17 @@
   flex-shrink: 0;
 }
 
-.transaction_income .transaction-icon {
+.transaction_income .transaction__icon {
   background-color: #d4edda;
   color: #28a745;
 }
 
-.transaction_expense .transaction-icon {
+.transaction_expense .transaction__icon {
   background-color: #f8d7da;
   color: #dc3545;
 }
 
-.transaction .transaction-icon .fa {
+.transaction .transaction__icon .fa {
   font-size: 18px;
   margin: 0;
 }
@@ -217,18 +223,18 @@
   color: #868e96;
 }
 
-.transaction .sum {
+.transaction .transaction__summ {
   font-size: 16px;
   font-weight: 600;
   margin-left: 15px;
   flex-shrink: 0;
 }
 
-.transaction_income .sum {
+.transaction_income .transaction__summ {
   color: #28a745;
 }
 
-.transaction_expense .sum {
+.transaction_expense .transaction__summ {
   color: #dc3545;
 }
 
@@ -287,17 +293,17 @@
     padding: 12px 15px;
   }
   
-  .transaction .transaction-icon {
+  .transaction .transaction__icon {
     width: 36px;
     height: 36px;
     margin-right: 10px;
   }
   
-  .transaction .transaction-icon .fa {
+  .transaction .transaction__icon .fa {
     font-size: 14px;
   }
   
-  .transaction .sum {
+  .transaction .transaction__summ {
     font-size: 14px;
   }
   

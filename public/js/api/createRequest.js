@@ -7,36 +7,34 @@ const createRequest = (options = {}) => {
     url = '',
     method = 'GET',
     data = null,
-    responseType = 'json', // 'json' или 'text'
-    callback = () => {}
+    callback = () => {},
+    responseType = 'json'
   } = options;
 
   const xhr = new XMLHttpRequest();
-  xhr.open(method, url, true);
 
-  xhr.setRequestHeader('Content-Type', 'application/json');
+  let requestUrl = url;
+  if (method === 'GET' && data && Object.keys(data).length > 0) {
+    const params = new URLSearchParams();
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key) && data[key] !== undefined && data[key] !== null) {
+        params.append(key, data[key]);
+      }
+    }
+    const query = params.toString();
+    if (query) {
+      requestUrl += (url.includes('?') ? '&' : '?') + query;
+    }
+  }
+
+  xhr.open(method, requestUrl);
+  xhr.responseType = responseType;
 
   xhr.onload = () => {
-    let responseData;
-
-    try {
-      if (responseType === 'json') {
-        // Пустой ответ (например, 204 No Content) может вызвать ошибку парсинга
-        responseData = xhr.responseText ? JSON.parse(xhr.responseText) : null;
-      } else {
-        responseData = xhr.responseText;
-      }
-    } catch (e) {
-      return callback(new Error('Не удалось распарсить ответ сервера'), null);
-    }
-
     if (xhr.status >= 200 && xhr.status < 300) {
-      callback(null, responseData);
+      callback(null, xhr.response);
     } else {
-      callback(new Error(`Ошибка сервера: ${xhr.status}`), {
-        status: xhr.status,
-        data: responseData
-      });
+      callback(new Error(`Ошибка сервера: ${xhr.status}`), xhr.response);
     }
   };
 
@@ -44,7 +42,8 @@ const createRequest = (options = {}) => {
     callback(new Error('Сетевая ошибка: не удалось соединиться с сервером'), null);
   };
 
-  if (data !== null) {
+  if (method !== 'GET' && data && Object.keys(data).length > 0) {
+    xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data));
   } else {
     xhr.send();

@@ -30,14 +30,18 @@ class TransactionsWidget {
       const incomeBtn = e.target.closest('.create-income-button');
       if (incomeBtn) {
         const modal = App.getModal('newIncome');
-        if (modal) modal.show();
+        if (modal) {
+          modal.show();
+        }
         return;
       }
 
       const expenseBtn = e.target.closest('.create-expense-button');
       if (expenseBtn) {
         const modal = App.getModal('newExpense');
-        if (modal) modal.show();
+        if (modal) {
+          modal.show();
+        }
       }
     });
   }

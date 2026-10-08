@@ -10,58 +10,43 @@ router.setDb = function(db) {
 //Запрос регистрации пользователя
 router.post("/register", function(request, response) {
     const db = dbInstance;
-    //получение параметров из тела запроса
     const { name, email, password } = request.body;
-    //формирование ошибки (не обязательна, но желательна т.к. валидация есть на UI)
-    let error = "";
-    if(name === "")
-        error += 'Поле Имя обязательно для заполнения. ';
 
-    if(email === "")
-        error += 'Поле E-Mail адрес для заполнения. ' ;
-
-    if(password === "")
-        error += 'Поле Пароль обязательно для заполнения.';
-    
-    //если ошибка сформирована...
-    if(error !== ""){
-        response.json({success: false, error});//отправляем ошибку
+    if (!name || !email || !password) {
+        let error = [];
+        if (!name) error.push('Поле Имя обязательно для заполнения.');
+        if (!email) error.push('Поле E-Mail адрес для заполнения.');
+        if (!password) error.push('Поле Пароль обязательно для заполнения.');
+        response.json({ success: false, error: error.join(' ') });
         return;
     }
 
-    //нахождение такого же пользователя по email
     let user = db.get("users").find({email}).value();
-    if(!user){//если существующий пользователь не найден...
-        //создаётся пользователя
-        user = { name, email, password, id:uniqid() };
-        //записывается в БД
+    if (!user) {
+        user = { name, email, password, id: uniqid() };
         db.get("users").push(user).write();
         request.session.id = user.id;
-        //отправляется созданный пользователь
-        response.json({success: true, user});
+        response.json({ success: true, user });
+        return;
     }
-    else{//если существующий пользователь найден...
-        //Отправляется ошибка о том, что пользователь такой уже существует
-        response.json({success: false, error: `E-Mail адрес ${email} уже существует.`});
-    }
-})
+
+    response.json({ success: false, error: `E-Mail адрес ${email} уже существует.` });
+});
 
 //запрос авторизации пользователя
 router.post("/login", function(request, response) {
     const db = dbInstance;
-    //получение параметров из запроса
     const { email, password } = request.body;
-    //нахождение пользователя по почте и паролю
-    let user = db.get("users").find({email, password});
-    let foundedUser = user.value();//получение из БД значения пользователя
-    if(!!foundedUser){//если пользователь существует...
+    const foundedUser = db.get("users").find({ email, password }).value();
+
+    if (foundedUser) {
         request.session.id = foundedUser.id;
-        //отправляется авторизованный пользователь
-        response.json({success: true, user: foundedUser});
+        response.json({ success: true, user: foundedUser });
+        return;
     }
-    else//если пользователь не существует, то отправляется ответ с ошибкой о ненахождении пользователя
-        response.json({success: false, error:`Пользователь c email ${email} и паролем ${password} не найден`});
-})
+
+    response.json({ success: false, error: "Неверный e-mail или пароль." });
+});
 
 //запрос разлогина пользователя
 router.post("/logout", function(request, response) {
@@ -74,36 +59,34 @@ router.post("/logout", function(request, response) {
     }
 })
 
+function getCurrentUserPayload(db, sessionId) {
+    const userValue = db.get("users").find({id: sessionId}).value();
+    if (!userValue) {
+        return null;
+    }
+    // Копия без пароля — нельзя мутировать объект из lowdb
+    const { password, ...user } = userValue;
+    return user;
+}
+
 //запрос получения текущего пользователя
 router.get("/current", function(request, response) {
     const db = dbInstance;
-    let { id } = request.session; // получение id пользователя из запроса
-    //получение из БД пользователя с переданным id
-    let user = db.get("users").find({id});
-    let userValue = user.value();//получение значения из БД
-    if(userValue){//если пользователь найден и он авторизован...
-        //удаляется пароль, который не нужен для Front-end'a
-        delete userValue.password;
-        //отправка ответа пользователем
-        response.json({success: true, user: userValue});
-    }
-    else{
-        //отправка ответа с отсутствием пользователя
+    const user = getCurrentUserPayload(db, request.session.id);
+    if (user) {
+        response.json({success: true, user});
+    } else {
         response.json({success: false, user: null, error: 'Пользователь не авторизован'});
     }
 })
 
-//алиас для /current — используется User.fetch() на фронтенде
+//алиас для /current
 router.get("/me", function(request, response) {
     const db = dbInstance;
-    let { id } = request.session;
-    let user = db.get("users").find({id});
-    let userValue = user.value();
-    if(userValue){
-        delete userValue.password;
-        response.json({success: true, user: userValue});
-    }
-    else{
+    const user = getCurrentUserPayload(db, request.session.id);
+    if (user) {
+        response.json({success: true, user});
+    } else {
         response.json({success: false, user: null, error: 'Пользователь не авторизован'});
     }
 })
