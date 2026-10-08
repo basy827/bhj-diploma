@@ -3,53 +3,54 @@ const multer  = require('multer');
 const upload = multer();
 const uniqid = require('uniqid');
 
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync', {
-    serialize: (data) => encrypt(JSON.stringify(data)),
-    deserialize: (data) => JSON.parse(decrypt(data))
-});
+let dbInstance;
 
-//запрос создания счета
-router.put("/", upload.none(), function(request, response) {
-    //получение названия счёта
-    const {name} = request.body;
-    const db = low(new FileSync('db.json'));// получение БД
-    let user = db.get("users").find({id: request.session.id});// поиск авторизованного пользователя
-    let userValue = user.value();// получение значения авторизованного пользователя
-    if(!userValue){
-        response.json({success: false, error: "Пользователь не авторизован"});// отправка ответа с данными
+router.setDb = function(db) {
+  dbInstance = db;
+};
+
+//запрос создания/удаления счета (POST /account)
+router.post("/", upload.none(), function(request, response) {
+    const db = dbInstance;
+
+    // Если в body есть id — это удаление
+    if (request.body.id) {
+        let accounts = db.get("accounts");
+        let transactions = db.get("transactions");
+        let removingAccount = accounts.find({id: request.body.id}).value();
+        if(removingAccount){
+            accounts.remove({id: request.body.id}).write();
+            transactions.remove({account_id: request.body.id}).write();
+            response.json({success: true});
+        }else{
+            response.json({success: false});
+        }
         return;
     }
 
-    const createdAccount = db.get("accounts").filter({user_id: request.session.id}).find({name}).value();
-    if(createdAccount){
+    // Иначе — создание счета
+    const {name} = request.body;
+    let user = db.get("users").find({id: request.session.id});
+    let userValue = user.value();
+    if(!userValue){
+        response.json({success: false, error: "Пользователь не авторизован"});
+        return;
+    }
+
+    const existingAccount = db.get("accounts").filter({user_id: request.session.id}).find({name}).value();
+    if(existingAccount){
         response.json({success: false, error: "Счёт с таким именем уже существует"});
         return;
     }
 
-    let creatingAccount = {name, user_id:userValue.id, id: uniqid()};//создаваемый аккаунт
-    db.get("accounts").push(creatingAccount).write();//добавление созданного аккаунта к уже существующим и запись в БД
-    response.json({success: true, account: creatingAccount});// отправка ответа с данными
-});
-
-//запрос изменения счета
-router.delete("/", upload.none(), function(request, response) {
-    const db = low(new FileSync('db.json'));// получение БД
-    let accounts = db.get("accounts");// получение списка счетов
-    let transactions = db.get("transactions");// получение списка счетов
-    let removingAccount = accounts.find({id: request.body.id}).value();// нахождение нужного удаляемого счёта
-    if(removingAccount){// если удаляемый аккаунт существует
-        accounts.remove({id: request.body.id}).write();// удалить и перезаписать аккаунт
-        transactions.remove({account_id: request.body.id}).write(); // удалить связанные транзакции и перезаписать
-        response.json({success: true});// отправка ответа успешности
-    }else{// если аккаунта нету
-        response.json({success: false});// отправка ответа неуспешности
-    }
+    let creatingAccount = {name, user_id:userValue.id, id: uniqid()};
+    db.get("accounts").push(creatingAccount).write();
+    response.json({success: true, account: creatingAccount});
 });
 
 //запрос получения списка счетов
 router.get("/:id?", upload.none(), function(request, response) {
-    const db = low(new FileSync('db.json'));
+    const db = dbInstance;
     let { id } = request.session; // получение id пользователя из запроса
 
     let user = db.get("users").find({id});

@@ -7,16 +7,19 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 
 const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync', {
-    serialize: (data) => encrypt(JSON.stringify(data)),
-    deserialize: (data) => JSON.parse(decrypt(data))
-  });
+const FileSync = require('lowdb/adapters/FileSync');
 const db = low(new FileSync('db.json'));
 if(!db.get('users').value())
     setDefaultUser(db);
 
 const app = express();
+
+app.use(morgan('tiny'));
+
 app.use(express.static(`${__dirname}/${PUBLIC_PATH}`));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 app.use(cookieSession({
@@ -25,8 +28,8 @@ app.use(cookieSession({
 }));
 
 const api = require('./routes');
+api.setDb(db);
 app.use('/', api);
-app.use(morgan('tiny'));
 
 app.get('*', function (_, res) {
     res.sendFile(path.resolve(`${__dirname}/${PUBLIC_PATH}`, INDEX_FILE));

@@ -1,21 +1,19 @@
 const router = require("express").Router();
-const multer  = require('multer');
-const upload = multer();
 const uniqid = require('uniqid');
 
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync', {
-    serialize: (data) => encrypt(JSON.stringify(data)),
-    deserialize: (data) => JSON.parse(decrypt(data))
-  });
+let dbInstance;
+
+router.setDb = function(db) {
+  dbInstance = db;
+};
 
 //Запрос регистрации пользователя
-router.post("/register",upload.none(), function(request, response) {
-    const db = low(new FileSync('db.json'));// получение БД
+router.post("/register", function(request, response) {
+    const db = dbInstance;
     //получение параметров из тела запроса
     const { name, email, password } = request.body;
     //формирование ошибки (не обязательна, но желательна т.к. валидация есть на UI)
-    error = "";
+    let error = "";
     if(name === "")
         error += 'Поле Имя обязательно для заполнения. ';
 
@@ -26,8 +24,10 @@ router.post("/register",upload.none(), function(request, response) {
         error += 'Поле Пароль обязательно для заполнения.';
     
     //если ошибка сформирована...
-    if(error !== "")
+    if(error !== ""){
         response.json({success: false, error});//отправляем ошибку
+        return;
+    }
 
     //нахождение такого же пользователя по email
     let user = db.get("users").find({email}).value();
@@ -47,8 +47,8 @@ router.post("/register",upload.none(), function(request, response) {
 })
 
 //запрос авторизации пользователя
-router.post("/login",upload.none(), function(request, response) {
-    const db = low(new FileSync('db.json'));// получение БД
+router.post("/login", function(request, response) {
+    const db = dbInstance;
     //получение параметров из запроса
     const { email, password } = request.body;
     //нахождение пользователя по почте и паролю
@@ -76,7 +76,7 @@ router.post("/logout", function(request, response) {
 
 //запрос получения текущего пользователя
 router.get("/current", function(request, response) {
-    const db = low(new FileSync('db.json'));// получение БД
+    const db = dbInstance;
     let { id } = request.session; // получение id пользователя из запроса
     //получение из БД пользователя с переданным id
     let user = db.get("users").find({id});
@@ -89,6 +89,21 @@ router.get("/current", function(request, response) {
     }
     else{
         //отправка ответа с отсутствием пользователя
+        response.json({success: false, user: null, error: 'Пользователь не авторизован'});
+    }
+})
+
+//алиас для /current — используется User.fetch() на фронтенде
+router.get("/me", function(request, response) {
+    const db = dbInstance;
+    let { id } = request.session;
+    let user = db.get("users").find({id});
+    let userValue = user.value();
+    if(userValue){
+        delete userValue.password;
+        response.json({success: true, user: userValue});
+    }
+    else{
         response.json({success: false, user: null, error: 'Пользователь не авторизован'});
     }
 })

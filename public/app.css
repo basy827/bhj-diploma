@@ -1,27 +1,141 @@
 .user-panel {
   display: none;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.app_user-logged .user-panel {
+  display: block;
+}
+
+.app_user-logged .user-panel .image img {
+  width: 40px;
+  height: 40px;
+}
+
+.app_user-logged .user-panel .info {
+  margin-left: 10px;
+}
+
+.app_user-logged .user-panel .user-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.app_user-logged .user-panel a {
+  font-size: 12px;
+  text-decoration: none;
 }
 
 .transactions-panel {
   display: none;
+  margin-bottom: 15px;
+}
+
+.app_user-logged .transactions-panel {
+  display: block;
+}
+
+.transactions-panel .btn {
+  margin-bottom: 8px;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 10px 15px;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.transactions-panel .btn-success {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.transactions-panel .btn-success:hover {
+  background-color: #218838;
+}
+
+.transactions-panel .btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.transactions-panel .btn-danger:hover {
+  background-color: #c82333;
 }
 
 .accounts-panel {
   display: none;
 }
 
-.categories-panel {
-  display: none;
+.app_user-logged .accounts-panel {
+  display: block;
 }
 
+.accounts-panel .header {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #868e96;
+  padding: 10px 15px;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 0;
+}
+
+.accounts-panel .create-account {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 3px 8px;
+}
+
+.accounts-panel .account {
+  border-bottom: 1px solid #f1f3f4;
+  transition: background-color 0.2s ease;
+}
+
+.accounts-panel .account:last-child {
+  border-bottom: none;
+}
+
+.accounts-panel .account:hover {
+  background-color: #f8f9fa;
+}
+
+.accounts-panel .account.active {
+  background-color: #e7f5ff;
+  border-left: 3px solid #007bff;
+}
+
+.accounts-panel .account a {
+  display: block;
+  padding: 12px 15px;
+  color: #495057;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.accounts-panel .account a:hover {
+  color: #007bff;
+}
+
+.accounts-panel .account span {
+  display: block;
+}
+
+.accounts-panel .account .account-sum {
+  font-size: 11px;
+  color: #868e96;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.menu-item_login,
+.menu-item_register,
 .menu-item_logout {
   display: none;
 }
 
-.app_user-logged .user-panel,
-.app_user-logged .transactions-panel,
-.app_user-logged .accounts-panel,
-.app_user-logged .categories-panel,
 .app_user-logged .menu-item_logout {
   display: block;
 }
@@ -35,48 +149,160 @@
   cursor: pointer;
 }
 
+/* ===== Транзакции ===== */
+.content {
+  padding: 0;
+}
+
 .transaction {
-  border-bottom: 1px solid lightgray;
-}
-
-.transaction__icon {
-  width: 50px;
-  height: 70px;
-  line-height: 70px;
-}
-
-.transaction__icon .fa {
-  color: #fff;
-  padding: 5px 7px;
-  box-sizing: border-box;
-  border-radius: 50%;
-}
-
-.transaction_income .transaction__title {
-  color: green;
-}
-
-.transaction_expense .transaction__title {
-  color: red;
-}
-
-.transaction_income .transaction__icon .fa {
-  background: green;
-}
-
-.transaction_expense .transaction__icon .fa {
-  background: red;
-}
-
-.transaction__summ {
-  font-size: 20px;
-  line-height: 70px;
-}
-
-.transaction__details {
   display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
 }
 
-.transaction__controls {
-  line-height: 70px;
+.transaction:last-child {
+  border-bottom: none;
+}
+
+.transaction:hover {
+  background-color: #f8f9fa;
+}
+
+.transaction .transaction-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.transaction_income .transaction-icon {
+  background-color: #d4edda;
+  color: #28a745;
+}
+
+.transaction_expense .transaction-icon {
+  background-color: #f8d7da;
+  color: #dc3545;
+}
+
+.transaction .transaction-icon .fa {
+  font-size: 18px;
+  margin: 0;
+}
+
+.transaction .transaction-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction .transaction-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  color: #212529;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction .time {
+  font-size: 12px;
+  color: #868e96;
+}
+
+.transaction .sum {
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 15px;
+  flex-shrink: 0;
+}
+
+.transaction_income .sum {
+  color: #28a745;
+}
+
+.transaction_expense .sum {
+  color: #dc3545;
+}
+
+.transaction .remove-button {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #adb5bd;
+  transition: color 0.2s ease;
+  padding: 5px;
+}
+
+.transaction .remove-button:hover {
+  color: #dc3545;
+}
+
+.transaction .remove-button .fa {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ===== Заголовок счёта ===== */
+.content-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
+  padding: 20px 25px 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.content-header h1 .content-title {
+  margin-right: 10px;
+}
+
+.content-header h1 .content-description {
+  font-size: 16px;
+  font-weight: 400;
+  color: #868e96;
+  margin: 0;
+}
+
+.content-header h1 .btn-danger {
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: none;
+}
+
+/* ===== Адаптивность ===== */
+@media (max-width: 768px) {
+  .transaction {
+    padding: 12px 15px;
+  }
+  
+  .transaction .transaction-icon {
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+  }
+  
+  .transaction .transaction-icon .fa {
+    font-size: 14px;
+  }
+  
+  .transaction .sum {
+    font-size: 14px;
+  }
+  
+  .content-header h1 {
+    padding: 15px;
+    font-size: 20px;
+  }
 }

@@ -9,12 +9,13 @@ class App {
    * боковой колонки
    * */
   static init() {
+    console.log('App.init() called');
     this.element = document.querySelector(".app");
     this.content = document.querySelector(".content-wrapper");
 
     this.initPages();
-    this.initForms();
     this.initModals();
+    this.initForms();
     this.initWidgets();
 
     Sidebar.init();
@@ -87,6 +88,11 @@ class App {
         document.querySelector("#new-expense-form")
       ),
     };
+
+    this.forms.login.modal = this.modals.login;
+    this.forms.register.modal = this.modals.register;
+    this.forms.createIncome.modal = this.modals.newIncome;
+    this.forms.createExpense.modal = this.modals.newExpense;
   }
 
   /**
@@ -179,6 +185,7 @@ class App {
    * Вызывает методы updateWidgets и updatePages()
    * */
   static update() {
+    console.log('App.update() called');
     this.updateWidgets();
     this.updatePages();
     this.updateForms();
